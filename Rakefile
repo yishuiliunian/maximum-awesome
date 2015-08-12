@@ -30,6 +30,12 @@ def install_github_bundle(user, package)
   end
 end
 
+def install_tmux_plugin(user, package)
+  unless File.exist? File.expand_path("~/.tmux/plugins/#{package}")
+    sh "git clone https://github.com/#{user}/#{package}.git ~/.tmux/plugins/#{package}"
+  end
+end
+
 def brew_cask_install(package, *options)
   output = `brew cask info #{package}`
   return unless output.include?('Not installed')
@@ -170,6 +176,15 @@ namespace :install do
     brew_install 'tmux', :requires => '>= 1.8'
   end
 
+  desc "Install tmux pulgins"
+  task :tmux_plugins do
+    step 'tmux plugins'
+    install_tmux_plugin 'erikw', 'tmux-powerline'
+    sh "cp tmux/plugins/tmux-powerline/themes/default.sh tmux/plugins/tmux-powerline/themes/mytheme.sh"
+    sh "./tmux/plugins/tmux-powerline/generate_rc.sh"
+    sh "mv ~/.tmux-powerlinerc.default ~/.tmux-powerlinerc"
+  end
+
   desc 'Install MacVim'
   task :macvim do
     step 'MacVim'
@@ -221,6 +236,7 @@ COPIED_FILES = filemap(
 
 LINKED_FILES = filemap(
   'vim'           => '~/.vim',
+  'tmux'          => '~/.tmux',
   'tmux.conf'     => '~/.tmux.conf',
   'vimrc'         => '~/.vimrc',
   'vimrc.bundles' => '~/.vimrc.bundles'
@@ -235,6 +251,7 @@ task :install do
   Rake::Task['install:ctags'].invoke
   Rake::Task['install:reattach_to_user_namespace'].invoke
   Rake::Task['install:tmux'].invoke
+  Rake::Task['install:tmux_plugins'].invoke
   Rake::Task['install:macvim'].invoke
 
   # TODO install gem ctags?
