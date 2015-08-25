@@ -8,6 +8,7 @@ inoremap jj <ESC>
 "nmap <leader>hl :let @/ = ""<CR>
 
 " gui settings
+syntax enable
 if (&t_Co == 256 || has('gui_running'))
   if ($TERM_PROGRAM == 'iTerm.app')
     colorscheme solarized

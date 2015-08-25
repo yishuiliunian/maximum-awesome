@@ -254,6 +254,11 @@ exec /Applications/MacVim.app/Contents/MacOS/Vim "$@"
     step "oh my zsh"
     sh 'sh -c "$(curl -fsSL https://raw.github.com/robbyrussell/oh-my-zsh/master/tools/install.sh)"'
   end
+
+  task :alcatraz do
+    step "xcode pulgins mamager Alcatraz"
+    sh 'curl -fsSL https://raw.githubusercontent.com/supermarin/Alcatraz/deploy/Scripts/install.sh | sh'
+  end
 end
 
 def filemap(map)
@@ -294,6 +299,9 @@ task :install do
   Rake::Task['install:macport'].invoke
   Rake::Task['install:nodejs'].invoke
   Rake::Task['install:ohmyzsh'].invoke
+  Rake::Task['install:alcatraz'].invoke
+
+
 
   # TODO install gem ctags?
   # TODO run gem ctags?
