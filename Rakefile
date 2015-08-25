@@ -123,6 +123,11 @@ def unlink_file(original_filename, symlink_filename)
   end
 end
 
+
+def port_install(name)
+  sh "sudo /opt/local/bin/port install #{name}"
+end
+
 namespace :install do
   desc 'Update or Install Brew'
   task :brew do
@@ -224,15 +229,31 @@ exec /Applications/MacVim.app/Contents/MacOS/Vim "$@"
   desc 'Install port'
   task :macport do
     step 'MacPort'
-    sh 'curl https://distfiles.macports.org/MacPorts/MacPorts-2.3.3.tar.bz2 -o MacPorts-2.3.3.tar.bz2'
-    sh 'tar xjvf MacPorts-2.3.3.tar.bz2'
-    sh 'cd MacPorts-2.3.3 && ./configure && make && sudo make install'
-    sh 'pwd'
-    sh 'rm -rf MacPorts-2.3.3*'
-    sh './bin/checkBashrc.sh'
+    if (`sudo /opt/local/bin/port version`.include?"Version:")
+      puts "MacPort already exist"
+    else
+      sh 'curl https://distfiles.macports.org/MacPorts/MacPorts-2.3.3.tar.bz2 -o MacPorts-2.3.3.tar.bz2'
+      sh 'tar xjvf MacPorts-2.3.3.tar.bz2'
+      sh 'cd MacPorts-2.3.3 && ./configure && make && sudo make install'
+      sh 'pwd'
+      sh 'rm -rf MacPorts-2.3.3*'
+      sh './bin/checkBashrc.sh'
+    end
   end
 
 
+  task :nodejs do
+    step "Node js"
+    Rake::Task['install:macport'].invoke
+    port_install "nodejs"
+    step "npm"
+    port_install "npm"
+  end
+
+  task :ohmyzsh do
+    step "oh my zsh"
+    sh 'sh -c "$(curl -fsSL https://raw.github.com/robbyrussell/oh-my-zsh/master/tools/install.sh)"'
+  end
 end
 
 def filemap(map)
@@ -253,8 +274,11 @@ LINKED_FILES = filemap(
   'tmux'          => '~/.tmux',
   'tmux.conf'     => '~/.tmux.conf',
   'vimrc'         => '~/.vimrc',
-  'vimrc.bundles' => '~/.vimrc.bundles'
+  'vimrc.bundles' => '~/.vimrc.bundles',
+  'zshrc'         => '~/.zshrc'
 )
+
+
 
 desc 'Install these config files.'
 task :install do
@@ -267,6 +291,9 @@ task :install do
   Rake::Task['install:tmux'].invoke
   Rake::Task['install:tmux_plugins'].invoke
   Rake::Task['install:macvim'].invoke
+  Rake::Task['install:macport'].invoke
+  Rake::Task['install:nodejs'].invoke
+  Rake::Task['install:ohmyzsh'].invoke
 
   # TODO install gem ctags?
   # TODO run gem ctags?
