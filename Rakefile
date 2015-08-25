@@ -219,6 +219,20 @@ exec /Applications/MacVim.app/Contents/MacOS/Vim "$@"
     install_github_bundle 'gmarik','vundle'
     sh '~/bin/vim -c "PluginInstall!" -c "q" -c "q"'
   end
+
+
+  desc 'Install port'
+  task :macport do
+    step 'MacPort'
+    sh 'curl https://distfiles.macports.org/MacPorts/MacPorts-2.3.3.tar.bz2 -o MacPorts-2.3.3.tar.bz2'
+    sh 'tar xjvf MacPorts-2.3.3.tar.bz2'
+    sh 'cd MacPorts-2.3.3 && ./configure && make && sudo make install'
+    sh 'pwd'
+    sh 'rm -rf MacPorts-2.3.3*'
+    sh './bin/checkBashrc.sh'
+  end
+
+
 end
 
 def filemap(map)
@@ -322,3 +336,4 @@ task :uninstall do
 end
 
 task :default => :install
+
