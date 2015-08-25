@@ -10,6 +10,15 @@ peace-loving hippies. Built for Mac OS X.
 * [tmux](http://tmux.sourceforge.net/)
 * Awesome syntax highlighting with the [Solarized color scheme](http://ethanschoonover.com/solarized)
 * Want to know more? [Fly Vim, First Class](http://corner.squareup.com/2013/08/fly-vim-first-class.html)
+* oh my zsh
+* nodejs & npm
+* tpm , tmux plugins manager
+* tmux-powerline
+* Markdown Livedown
+* Xcode Alcatraz
+
+
+###oh my zsh!!!
 
 ### vim
 
@@ -26,6 +35,13 @@ peace-loving hippies. Built for Mac OS X.
 * `<C-]>` jump to definition using ctags
 * `,l` begins aligning lines on a string, usually used as `,l=` to align assignments
 * `<C-hjkl>` move between windows, shorthand for `<C-w> hjkl`
+
+####livedown preview
+* LiveDownPreview open the preview window in Browser
+
+###Nodejs & npm
+
+###Xcode plugins manager ---- alcatraz
 
 ### tmux
 
