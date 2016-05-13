@@ -185,7 +185,6 @@ namespace :install do
   task :tmux_plugins do
     step 'tmux plugins'
     install_tmux_plugin 'erikw', 'tmux-powerline'
-    sh "cp ~/.tmux/plugins/tmux-powerline/themes/default.sh tmux/plugins/tmux-powerline/themes/mytheme.sh"
     sh "~/.tmux/plugins/tmux-powerline/generate_rc.sh"
     sh "mv ~/.tmux-powerlinerc.default ~/.tmux-powerlinerc"
   end
