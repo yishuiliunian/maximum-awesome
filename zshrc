@@ -104,3 +104,4 @@ alias -s bz2='tar -xjvf'
 #自动补全
 autoload -U compinit
 compinit
+eval $(thefuck --alias)
