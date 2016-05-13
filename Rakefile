@@ -244,9 +244,9 @@ exec /Applications/MacVim.app/Contents/MacOS/Vim "$@"
   task :nodejs do
     step "Node js"
     Rake::Task['install:macport'].invoke
-    port_install "nodejs"
+    brew_install "nodejs"
     step "npm"
-    port_install "npm"
+    brew_install "npm"
   end
 
   task :ohmyzsh do
