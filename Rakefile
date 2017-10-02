@@ -17,6 +17,19 @@ def brew_install(package, *args)
   end
 end
 
+def load_plugins(file)
+  array = []
+  File.readlines('ApplicationPlugins/'+"#{file}.plugins").each { |plugin|
+    plugin = plugin.gsub(/#.*#/,"")
+    plugin = plugin.gsub(/\n/,"")
+    key =  plugin.gsub(/\s+/,"")
+    if key.length != 0
+      array << plugin
+    end
+  }
+  return array
+end
+
 def version_match?(requirement, version)
   # This is a hack, but it lets us avoid a gem dep for version checking.
   # Gem dependencies must be numeric, so we remove non-numeric characters here.
@@ -147,6 +160,10 @@ namespace :install do
       abort "Failed to tap caskroom/homebrew-cask in Homebrew."
     end
 
+    unless system('brew tap | grep caskroom/drivers > /dev/null' || system('brew tap caskroom/drivers'))
+      abort "Failed to tap caskroom/drivers in Homebrew"
+    end
+
     brew_install 'brew-cask-completion'
   end
 
@@ -156,11 +173,6 @@ namespace :install do
     brew_install 'the_silver_searcher'
   end
 
-  desc "Install wget"
-  task :wget  do
-    setp 'wget'
-    brew_install 'wget'
-  end
 
   desc 'Install iTerm'
   task :iterm do
@@ -195,7 +207,10 @@ namespace :install do
   desc "Install tmux pulgins"
   task :tmux_plugins do
     step 'tmux plugins'
-    sh "git clone https://github.com/tmux-plugins/tpm ~/.tmux/plugins/tpm"
+    path = File.expand_path("~")+'/.tmux/plugins/tpm'
+    if not Dir.exists?(path)
+      sh "git clone https://github.com/tmux-plugins/tpm #{path}"
+    end
     install_tmux_plugin 'erikw', 'tmux-powerline'
     sh "~/.tmux/plugins/tmux-powerline/generate_rc.sh"
     sh "mv ~/.tmux-powerlinerc.default ~/.tmux-powerlinerc"
@@ -253,13 +268,6 @@ exec /Applications/MacVim.app/Contents/MacOS/Vim "$@"
   end
 
 
-  task :nodejs do
-    step "Node js"
-    Rake::Task['install:macport'].invoke
-    brew_install "nodejs"
-    step "npm"
-    brew_install "npm"
-  end
 
   task :ohmyzsh do
     step "oh my zsh"
@@ -271,32 +279,50 @@ exec /Applications/MacVim.app/Contents/MacOS/Vim "$@"
     sh 'curl -fsSL https://raw.githubusercontent.com/supermarin/Alcatraz/deploy/Scripts/install.sh | sh'
   end
 
-  desc "the fuck"
-  task :thefuck do
-    step "The Fuck"
-    brew_install "thefuck"
-  end
+
 
   desc "Mananger application cmd"
   task :mas do
     step "mas : Mac Apple Store Applications"
     brew_install 'mas'
+    applications = load_plugins('mas')
+    applications.each { |app|
+      sh "mas install #{app}"
+    }
   end
 
 
-  desc "SourceTree"
-  task :sourcetree do
-    step "source tree"
-    brew_cask_install 'sourcetree'
+
+  desc "Atom"
+  task :atom do
+    step "atom"
+    brew_cask_install 'atom'
+
+    step "Atom Plugins"
+    plugins = load_plugins('atom')
+    plugins.each {|plugin|
+       sh "apm install #{plugin}"
+    }
   end
 
   desc "Applications From Brew cask"
   task :cask_applications do
     step "Install Applications From Cask"
-    Rake::Task['install:sourcetree'].invoke
+    apps = load_plugins('brew_cask')
+    apps.each { |app|
+      brew_cask_install app
+    }
   end
 
-
+  desc "Applications From Brew"
+  task :brew_applications do
+    step "Install Applications From Brew"
+    apps = load_plugins('brew')
+    apps.each { |app|
+      step "Install #{app}"
+      brew_install app
+    }
+  end
 end
 
 def filemap(map)
@@ -327,18 +353,17 @@ desc 'Install these config files.'
 task :install do
   Rake::Task['install:brew'].invoke
   Rake::Task['install:brew_cask'].invoke
+  Rake::Task['install:brew_applications'].invoke
+  Rake::Task['install:cask_applications'].invoke
   Rake::Task['install:the_silver_searcher'].invoke
   Rake::Task['install:iterm'].invoke
-  Rake::Task['install:ctags'].invoke
   Rake::Task['install:reattach_to_user_namespace'].invoke
   Rake::Task['install:tmux'].invoke
   Rake::Task['install:tmux_plugins'].invoke
   Rake::Task['install:macvim'].invoke
   Rake::Task['install:macport'].invoke
-  Rake::Task['install:thefuck'].invoke
-  Rake::Task['install:nodejs'].invoke
   Rake::Task['install:mas'].invoke
-  Rake::Task['install:alcatraz'].invoke
+  # Rake::Task['install:alcatraz'].invoke
   Rake::Task['install:ohmyzsh'].invoke
 
 
@@ -379,11 +404,6 @@ task :install do
   puts
 end
 
-
-desc "Atom"
-task :atom  do
-  wget
-end
 
 desc 'Uninstall these config files.'
 task :uninstall do

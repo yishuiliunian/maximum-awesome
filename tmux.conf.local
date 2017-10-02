@@ -1,1 +1,2 @@
 # Add your local tmux config here
+source-file Applications/tmux.plugins
