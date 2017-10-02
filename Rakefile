@@ -128,6 +128,8 @@ def port_install(name)
   sh "sudo /opt/local/bin/port install #{name}"
 end
 
+
+
 namespace :install do
   desc 'Update or Install Brew'
   task :brew do
@@ -145,13 +147,19 @@ namespace :install do
       abort "Failed to tap caskroom/homebrew-cask in Homebrew."
     end
 
-    brew_install 'brew-cask'
+    brew_install 'brew-cask-completion'
   end
 
   desc 'Install The Silver Searcher'
   task :the_silver_searcher do
     step 'the_silver_searcher'
     brew_install 'the_silver_searcher'
+  end
+
+  desc "Install wget"
+  task :wget  do
+    setp 'wget'
+    brew_install 'wget'
   end
 
   desc 'Install iTerm'
@@ -161,6 +169,7 @@ namespace :install do
       brew_cask_install 'iterm2'
     end
   end
+
 
   desc 'Install ctags'
   task :ctags do
@@ -181,9 +190,12 @@ namespace :install do
     brew_install 'tmux', :requires => '>= 2.1'
   end
 
+
+
   desc "Install tmux pulgins"
   task :tmux_plugins do
     step 'tmux plugins'
+    sh "git clone https://github.com/tmux-plugins/tpm ~/.tmux/plugins/tpm"
     install_tmux_plugin 'erikw', 'tmux-powerline'
     sh "~/.tmux/plugins/tmux-powerline/generate_rc.sh"
     sh "mv ~/.tmux-powerlinerc.default ~/.tmux-powerlinerc"
@@ -258,6 +270,33 @@ exec /Applications/MacVim.app/Contents/MacOS/Vim "$@"
     step "xcode pulgins mamager Alcatraz"
     sh 'curl -fsSL https://raw.githubusercontent.com/supermarin/Alcatraz/deploy/Scripts/install.sh | sh'
   end
+
+  desc "the fuck"
+  task :thefuck do
+    step "The Fuck"
+    brew_install "thefuck"
+  end
+
+  desc "Mananger application cmd"
+  task :mas do
+    step "mas : Mac Apple Store Applications"
+    brew_install 'mas'
+  end
+
+
+  desc "SourceTree"
+  task :sourcetree do
+    step "source tree"
+    brew_cask_install 'sourcetree'
+  end
+
+  desc "Applications From Brew cask"
+  task :cask_applications do
+    step "Install Applications From Cask"
+    Rake::Task['install:sourcetree'].invoke
+  end
+
+
 end
 
 def filemap(map)
@@ -296,9 +335,11 @@ task :install do
   Rake::Task['install:tmux_plugins'].invoke
   Rake::Task['install:macvim'].invoke
   Rake::Task['install:macport'].invoke
+  Rake::Task['install:thefuck'].invoke
   Rake::Task['install:nodejs'].invoke
-  Rake::Task['install:ohmyzsh'].invoke
+  Rake::Task['install:mas'].invoke
   Rake::Task['install:alcatraz'].invoke
+  Rake::Task['install:ohmyzsh'].invoke
 
 
 
@@ -338,6 +379,12 @@ task :install do
   puts
 end
 
+
+desc "Atom"
+task :atom  do
+  wget
+end
+
 desc 'Uninstall these config files.'
 task :uninstall do
   step 'un-symlink'
@@ -370,4 +417,3 @@ task :uninstall do
 end
 
 task :default => :install
-
