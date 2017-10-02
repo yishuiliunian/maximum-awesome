@@ -323,6 +323,42 @@ exec /Applications/MacVim.app/Contents/MacOS/Vim "$@"
       brew_install app
     }
   end
+
+
+  desc "Ruby Version Manager "
+  task :rvm do
+    step "Install RVM"
+    sh "gpg --keyserver hkp://keys.gnupg.net --recv-keys 409B6B1796C275462A1703113804BB82D39DC0E3 7D2BAF1CF37B13E2069D6956105BD0E739499BDB"
+    sh "curl -sSL https://get.rvm.io | bash -s stable"
+    sh "rvm install ruby-head"
+    sh "rvm --default use ruby-head"
+  end
+
+  task :gem_applications do
+    step "Install Gem Applications"
+    apps = load_plugins("gem")
+    apps.each { |app|
+      step "Gem Install #{app}"
+      sh "gem install #{app}"
+    }
+  end
+
+  desc "Install Pip"
+  task :pip do
+    step "Install Pip Python"
+    sh "sudo easy_install pip"
+  end
+
+  desc "Install Pip Applications"
+  task :pip_applications do
+    step "Install Pip Applications"
+    apps = load_plugins("pip")
+    apps.each { |app|
+      step "Gem Install #{app}"
+      sh "sudo pip install #{app}"
+    }
+  end
+
 end
 
 def filemap(map)
@@ -361,8 +397,12 @@ task :install do
   Rake::Task['install:tmux'].invoke
   Rake::Task['install:tmux_plugins'].invoke
   Rake::Task['install:macvim'].invoke
+  Rake::Task['install:rvm'].invoke
+  Rake::Task['install:gem_applications'].invoke
+  Rake::Task['install:pip'].invoke
+  Rake::Task['install:pip_applications'].invoke
   Rake::Task['install:macport'].invoke
-  Rake::Task['install:mas'].invoke
+  Rake::Task['install:mas'].invokRae
   # Rake::Task['install:alcatraz'].invoke
   Rake::Task['install:ohmyzsh'].invoke
 
