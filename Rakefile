@@ -19,18 +19,7 @@ def brew_install(package, *args)
   end
 end
 
-def load_plugins(file)
-  array = []
-  File.readlines('ApplicationPlugins/'+"#{file}.plugins").each { |plugin|
-    plugin = plugin.gsub(/#.*#/,"")
-    plugin = plugin.gsub(/\n/,"")
-    key =  plugin.gsub(/\s+/,"")
-    if key.length != 0
-      array << plugin
-    end
-  }
-  return array
-end
+
 
 def version_match?(requirement, version)
   # This is a hack, but it lets us avoid a gem dep for version checking.
@@ -336,10 +325,7 @@ exec /Applications/MacVim.app/Contents/MacOS/Vim "$@"
   task :gem_applications do
     step "Install Gem Applications"
     apps = load_plugins("gem")
-    apps.each { |app|
-      step "Gem Install #{app}"
-      sh "gem install #{app}"
-    }
+    gem_install_apps apps
   end
 
   desc "Install Pip"
@@ -353,7 +339,7 @@ exec /Applications/MacVim.app/Contents/MacOS/Vim "$@"
     step "Install Pip Applications"
     apps = load_plugins("pip")
     apps.each { |app|
-      step "Gem Install #{app}"
+      step "Pip Install #{app}"
       sh "sudo pip install #{app}"
     }
   end

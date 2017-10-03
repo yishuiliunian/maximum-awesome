@@ -76,6 +76,7 @@ export PATH="/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin"
 
 source $ZSH/oh-my-zsh.sh
 source ~/.bashrc
+[[ -s "$HOME/.bash_profile" ]] && source "$HOME/.bash_profile" # Load the default .profile
 
 # You may need to manually set your language environment
 # export LANG=en_US.UTF-8
@@ -131,9 +132,9 @@ eval $(thefuck --alias)
 # Add RVM to PATH for scripting. Make sure this is the last PATH variable change.
 export PATH="$PATH:$HOME/.rvm/bin"
 
-#Antigen Zsh Manage
+#lunchy
 
-
-
-
-# Tell Antigen that you're done.
+LUNCHY_DIR=$(dirname `gem which lunchy`)/../extras
+if [ -f $LUNCHY_DIR/lunchy-completion.zsh ]; then
+  . $LUNCHY_DIR/lunchy-completion.zsh
+fi

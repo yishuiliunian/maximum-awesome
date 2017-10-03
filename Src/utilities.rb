@@ -7,6 +7,11 @@ def step(description)
   puts "\e[32m#{description}\e[0m"
 end
 
+def WARNING(message)
+  puts
+  puts "\e[31m#{message}\e[0m"
+end
+
 def load_plugins(file)
   array = []
   File.readlines('ApplicationPlugins/'+"#{file}.plugins").each { |plugin|
