@@ -272,6 +272,8 @@ exec /Applications/MacVim.app/Contents/MacOS/Vim "$@"
   task :ohmyzsh do
     step "oh my zsh"
     sh 'sh -c "$(curl -fsSL https://raw.github.com/robbyrussell/oh-my-zsh/master/tools/install.sh)"'
+    step "Install antigen ---ZSH Plugins Manager"
+    brew_install "antigen"
   end
 
   task :alcatraz do
@@ -310,6 +312,7 @@ exec /Applications/MacVim.app/Contents/MacOS/Vim "$@"
     step "Install Applications From Cask"
     apps = load_plugins('brew_cask')
     apps.each { |app|
+      step "Install #{app}"
       brew_cask_install app
     }
   end

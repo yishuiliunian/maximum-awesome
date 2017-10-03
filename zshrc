@@ -1,4 +1,26 @@
 # Path to your oh-my-zsh installation.
+source /usr/local/opt/antigen/share/antigen/antigen.zsh
+# Load the oh-my-zsh's library.
+antigen use oh-my-zsh
+# Bundles from the default repo (robbyrussell's oh-my-zsh).
+antigen bundle git
+antigen bundle heroku
+antigen bundle pip
+antigen bundle lein
+antigen bundle command-not-found
+antigen bundle unixorn/autoupdate-antigen.zshplugin
+antigen bundle Vifon/deer
+
+# Syntax highlighting bundle.
+antigen bundle zsh-users/zsh-syntax-highlighting
+
+antigen apply
+
+#deer
+autoload -U deer
+zle -N deer
+bindkey '\ek' deer
+
 export ZSH=~/.oh-my-zsh
 
 # Set name of the theme to load.
@@ -108,3 +130,10 @@ eval $(thefuck --alias)
 
 # Add RVM to PATH for scripting. Make sure this is the last PATH variable change.
 export PATH="$PATH:$HOME/.rvm/bin"
+
+#Antigen Zsh Manage
+
+
+
+
+# Tell Antigen that you're done.
