@@ -1,3 +1,5 @@
+require_relative "Src/fudation.rb"
+
 ENV['HOMEBREW_CASK_OPTS'] = "--appdir=/Applications"
 
 def brew_install(package, *args)
@@ -56,12 +58,6 @@ def brew_cask_install(package, *options)
   sh "brew cask install --binarydir=#{`brew --prefix`.chomp}/bin #{package} #{options.join ' '}"
 end
 
-def step(description)
-  description = "-- #{description} "
-  description = description.ljust(80, '-')
-  puts
-  puts "\e[32m#{description}\e[0m"
-end
 
 def app_path(name)
   path = "/Applications/#{name}.app"
@@ -362,6 +358,12 @@ exec /Applications/MacVim.app/Contents/MacOS/Vim "$@"
     }
   end
 
+  desc "npm applications"
+  task :npm_applications do
+    step "Install npm applications"
+    apps = load_plugins("npm")
+    npm_install_apps(apps)
+  end
 end
 
 def filemap(map)
@@ -405,6 +407,7 @@ task :install do
   Rake::Task['install:pip'].invoke
   Rake::Task['install:pip_applications'].invoke
   Rake::Task['install:macport'].invoke
+  Rake::Task['install:npm_applications'].invoke
   Rake::Task['install:mas'].invokRae
   # Rake::Task['install:alcatraz'].invoke
   Rake::Task['install:ohmyzsh'].invoke

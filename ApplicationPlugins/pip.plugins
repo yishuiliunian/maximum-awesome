@@ -1,2 +1,8 @@
 ipython
 tushare
+lxml
+pandas
+numpy
+requests
+bs4
+jupyter

@@ -8,3 +8,5 @@ filesize
 vim-mode
 git-plus
 autocomplete-paths
+linter-ruby
+autocomplete-ruby
