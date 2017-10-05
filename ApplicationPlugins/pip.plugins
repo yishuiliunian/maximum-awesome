@@ -6,3 +6,5 @@ numpy
 requests
 bs4
 jupyter
+seaborn
+itermplot
