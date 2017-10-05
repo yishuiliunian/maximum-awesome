@@ -9,3 +9,12 @@ def npm_install_apps(apps)
     apps.each { |app| npm_install app }
   end
 end
+
+namespace :install do
+  desc "npm applications"
+  task :npm_applications do
+    step "Install npm applications"
+    apps = load_plugins("npm")
+    npm_install_apps(apps)
+  end
+end
