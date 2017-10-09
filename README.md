@@ -38,12 +38,30 @@ peace-loving hippies. Built for Mac OS X.
 * `,l` begins aligning lines on a string, usually used as `,l=` to align assignments
 * `<C-hjkl>` move between windows, shorthand for `<C-w> hjkl`
 
-####livedown preview
+####  livedown preview
 * LiveDownPreview open the preview window in Browser
 
-###Nodejs & npm
+### Nodejs & npm
 
-###Xcode plugins manager ---- alcatraz
+### Xcode plugins manager ---- alcatraz
+
+### pip
+
+1. tushare
+2. 基本的量化分析环境
+
+### mas
+
+mac app store管理工具
+
+### atom编辑器
+
+及插件安装
+
+### RVM & GEM
+
+### MacPort
+
 
 ### tmux
 
