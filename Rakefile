@@ -2,18 +2,6 @@ require_relative "Src/fudation.rb"
 
 ENV['HOMEBREW_CASK_OPTS'] = "--appdir=/Applications"
 
-def install_github_bundle(user, package)
-  unless File.exist? File.expand_path("~/.vim/bundle/#{package}")
-    sh "git clone https://github.com/#{user}/#{package} ~/.vim/bundle/#{package}"
-  end
-end
-
-def install_tmux_plugin(user, package)
-  unless File.exist? File.expand_path("~/.tmux/plugins/#{package}")
-    sh "git clone https://github.com/#{user}/#{package}.git ~/.tmux/plugins/#{package}"
-  end
-end
-
 
 def get_backup_path(path)
   number = 1
@@ -64,23 +52,15 @@ namespace :install do
   end
 end
 
-def filemap(map)
-  map.inject({}) do |result, (key, value)|
-    result[File.expand_path(key)] = File.expand_path(value)
-    result
-  end.freeze
-end
+
 
 COPIED_FILES = filemap(
   'vimrc.local'         => '~/.vimrc.local',
   'vimrc.bundles.local' => '~/.vimrc.bundles.local',
-  'tmux.conf.local'     => '~/.tmux.conf.local'
 )
 
 LINKED_FILES = filemap(
   'vim'           => '~/.vim',
-  'tmux'          => '~/.tmux',
-  'tmux.conf'     => '~/.tmux.conf',
   'vimrc'         => '~/.vimrc',
   'vimrc.bundles' => '~/.vimrc.bundles',
   'zshrc'         => '~/.zshrc'
@@ -95,10 +75,9 @@ task :install do
   Rake::Task['install:brew_applications'].invoke
   Rake::Task['install:cask_applications'].invoke
   Rake::Task['install:the_silver_searcher'].invoke
-  Rake::Task['install:iterm'].invoke
+  Rake::Task['install:item_all'].invoke
   Rake::Task['install:reattach_to_user_namespace'].invoke
-  Rake::Task['install:tmux'].invoke
-  Rake::Task['install:tmux_plugins'].invoke
+  Rake::Task['install:tmux_all'].invoke
   Rake::Task['install:macvim'].invoke
   Rake::Task['install:rvm'].invoke
   Rake::Task['install:gem_applications'].invoke
@@ -107,7 +86,7 @@ task :install do
   Rake::Task['install:hammerspoon'].invoke
   Rake::Task['install:macport'].invoke
   Rake::Task['install:npm_applications'].invoke
-  Rake::Task['install:mas'].invokRae
+  Rake::Task['install:mas'].invoke
   # Rake::Task['install:alcatraz'].invoke
   Rake::Task['install:ohmyzsh'].invoke
 
@@ -129,24 +108,7 @@ task :install do
   # Install Vundle and bundles
   Rake::Task['install:vundle'].invoke
 
-  step 'iterm2 colorschemes'
-  colorschemes = `defaults read com.googlecode.iterm2 'Custom Color Presets'`
-  dark  = colorschemes !~ /Solarized Dark/
-  light = colorschemes !~ /Solarized Light/
-  sh('open', '-a', '/Applications/iTerm.app', File.expand_path('iterm2-colors-solarized/Solarized Dark.itermcolors')) if dark
-  sh('open', '-a', '/Applications/iTerm.app', File.expand_path('iterm2-colors-solarized/Solarized Light.itermcolors')) if light
 
-  step 'iterm2 profiles'
-  puts
-  puts "  Your turn!"
-  puts
-  puts "  Go and manually set up Solarized Light and Dark profiles in iTerm2."
-  puts "  (You can do this in 'Preferences' -> 'Profiles' by adding a new profile,"
-  puts "  then clicking the 'Colors' tab, 'Load Presets...' and choosing a Solarized option.)"
-  puts "  Also be sure to set Terminal Type to 'xterm-256color' in the 'Terminal' tab."
-  puts
-  puts "  Enjoy!"
-  puts
 end
 
 

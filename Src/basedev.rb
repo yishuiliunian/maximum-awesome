@@ -33,26 +33,6 @@ namespace :install do
     brew_install 'reattach-to-user-namespace'
   end
 
-  desc 'Install tmux'
-  task :tmux do
-    step 'tmux'
-    # tmux copy-pipe function needs tmux >= 1.8
-    brew_install 'tmux', :requires => '>= 2.1'
-  end
-
-
-
-  desc "Install tmux pulgins"
-  task :tmux_plugins do
-    step 'tmux plugins'
-    path = File.expand_path("~")+'/.tmux/plugins/tpm'
-    if not Dir.exists?(path)
-      sh "git clone https://github.com/tmux-plugins/tpm #{path}"
-    end
-    install_tmux_plugin 'erikw', 'tmux-powerline'
-    sh "~/.tmux/plugins/tmux-powerline/generate_rc.sh"
-    sh "mv ~/.tmux-powerlinerc.default ~/.tmux-powerlinerc"
-  end
 
   desc 'Install MacVim'
   task :macvim do

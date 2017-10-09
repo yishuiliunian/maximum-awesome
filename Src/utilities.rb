@@ -84,3 +84,20 @@ def unlink_file(original_filename, symlink_filename)
     $stderr.puts "#{symlink_path} is not a symlink, skipping."
   end
 end
+
+def filemap(map)
+  map.inject({}) do |result, (key, value)|
+    result[File.expand_path(key)] = File.expand_path(value)
+    result
+  end.freeze
+end
+
+def steupConfigureFiles(linked, copyed)
+  linked.each do |orig, link|
+    link_file orig, link
+  end
+
+  copyed.each do |orig, copy|
+    cp orig, copy, :verbose => true unless File.exist?(copy)
+  end
+end

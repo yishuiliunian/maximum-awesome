@@ -5,8 +5,16 @@ require 'rake'
 def brew_cask_install(package, *options)
   output = `brew cask info #{package}`
   return unless output.include?('Not installed')
-
-  sh "brew cask install --binarydir=#{`brew --prefix`.chomp}/bin #{package} #{options.join ' '}"
+  return if app? package
+  versions = `brew list #{package} --versions`
+  # if brew exits with error we install tmux
+  if versions.empty?
+    sh "brew cask install --binarydir=#{`brew --prefix`.chomp}/bin #{package} #{options.join ' '}" do |ok , status|
+      unless ok
+        WARNING "#{package} already install by other manager"
+      end
+    end
+  end
 end
 
 namespace :install do
