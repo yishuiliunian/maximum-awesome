@@ -1,5 +1,7 @@
 # Maximum Awesome
 
+> 脱胎于Maximun Awesome后来经过各种重构和添加功能，变成了现在的模样。可以快速配置一台基本的mac 开发环境。
+
 Config files for vim and tmux, lovingly tended by a small subculture of
 peace-loving hippies. Built for Mac OS X.
 
