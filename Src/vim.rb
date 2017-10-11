@@ -3,6 +3,19 @@ require_relative 'brew.rb'
 require_relative 'cask.rb'
 require 'rake'
 
+
+
+VIM_COPIED_FILES = filemap(
+  'vimrc.local'         => '~/.vimrc.local',
+  'vimrc.bundles.local' => '~/.vimrc.bundles.local',
+)
+
+VIM_LINKED_FILES = filemap(
+  'vim'           => '~/.vim',
+  'vimrc'         => '~/.vimrc',
+  'vimrc.bundles' => '~/.vimrc.bundles',
+)
+
 namespace :install do
     desc 'Install MacVim'
     task :macvim do
@@ -37,5 +50,25 @@ namespace :install do
       step 'vundle'
       install_github_bundle 'VundleVim','Vundle.vim'
       sh '~/bin/vim -c "PluginInstall!" -c "q" -c "q"'
+    end
+
+
+    desc "Install VIM magic editor"
+    task :vim do
+      Rake::Task['install:macvim'].invoke
+
+      step 'symlink'
+
+      VIM_LINKED_FILES.each do |orig, link|
+        link_file orig, link
+      end
+
+      VIM_COPIED_FILES.each do |orig, copy|
+        cp orig, copy, :verbose => true unless File.exist?(copy)
+      end
+
+      # Install Vundle and bundles
+      Rake::Task['install:vundle'].invoke
+
     end
 end
