@@ -2,9 +2,25 @@
 
 > 脱胎于Maximun Awesome后来经过各种重构和添加功能，变成了现在的模样。可以快速配置一台基本的mac 开发环境。
 
-快速搭建Mac开发环境。运行该脚本将会把在mac上常用的包管理工具都安装上包括：gem, pip, brew, brew_cask, apn, npm, tpm.并且将会安装一大批默认的提高效率的程序和脚本，可以在ApplicationPlugins目录下面查看都有哪些程序。
+快速搭建Mac开发环境。运行该脚本将会把在mac上常用的包管理工具都安装上包括：gem, pip, brew, brew_cask, apm, npm, tpm.并且将会安装一大批默认的提高效率的程序和脚本，可以在ApplicationPlugins目录下面查看都有哪些程序。
 
 ## What's in it?
+
+
+作为一个配置工具，会将一个基本的开发环境配置好。
+
+> 因为循环依赖的问题，在使用该脚本的时候您需要先自行下载Xcode，并且同意其license
+
+可以使用该脚本安全的基本的包管理工具包括：
+
+1. brew
+2. brew cask
+3. gem [Ruby 包管理]
+4. pip [Python 包管理]
+5. apm [Atom 插件管理器]
+6. npm [Node 包管理]
+7. tpm [Tmux 插件管理]
+8. vbundle [Vim 插件管理]
 
 * [MacVim](https://github.com/macvim-dev/macvim) (independent or for use in a terminal)
 * [iTerm 2](http://www.iterm2.com/)
@@ -38,6 +54,7 @@
 * `<C-hjkl>` move between windows, shorthand for `<C-w> hjkl`
 
 ####  livedown preview
+
 * LiveDownPreview open the preview window in Browser
 
 ### Nodejs & npm
