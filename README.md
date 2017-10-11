@@ -21,6 +21,10 @@
 6. npm [Node 包管理]
 7. tpm [Tmux 插件管理]
 8. vbundle [Vim 插件管理]
+9. MacPort
+
+
+并且可以安装以下优秀的软件：
 
 * [MacVim](https://github.com/macvim-dev/macvim) (independent or for use in a terminal)
 * [iTerm 2](http://www.iterm2.com/)
@@ -36,6 +40,22 @@
 * rvm ruby环境管理
 * atom Github开源的编辑器
 
+
+### 最经典的terminal开发环境
+
+oymyzsh + iterm2 + tmux + powerline
+
+### 优秀的可编程窗口管理
+
+hammerspoon + awesome-hammerspoon
+
+
+
+### Mac Office 全家桶
+
+* keynote
+* numbers
+* pages
 
 ### vim
 
@@ -57,9 +77,8 @@
 
 * LiveDownPreview open the preview window in Browser
 
-### Nodejs & npm
+在Vim中编辑macdown，可以通过浏览器直接预览
 
-### Xcode plugins manager ---- alcatraz
 
 ### pip
 
@@ -72,11 +91,11 @@ mac app store管理工具
 
 ### atom编辑器
 
-及插件安装
+Atom及插件安装.
 
-### RVM & GEM
+* vim模式
+* 各种编程基本插件
 
-### MacPort
 
 
 ### tmux
@@ -94,7 +113,22 @@ You can adjust the size of the smaller panes in `tmux.conf` by lowering or incre
 
 ## Install
 
+如果你想全量安装可以直接使用：
+~~~
     rake
+~~~
+
+该命令会将按照默认的配置对您的电脑进行配置。
+
+如果你只想安装某些功能，可以通过
+
+~~~
+rake install:<安装的配置>
+~~~
+
+来进行安装。
+
+各个安装包管理工具将会安装的软件在ApplicationPlugins目录下面，你可以增删改来满足自己的定制化需求。目前在这些里面的包都是楼主经过好长时间沉淀下来的优秀软件。
 
 ## Update
 
